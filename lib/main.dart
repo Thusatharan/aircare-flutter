@@ -1,3 +1,4 @@
+import 'package:aircare/components/bottom_navigation.dart';
 import 'package:aircare/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         textTheme: TextTheme(subtitle2: TextStyle(color: Colors.white)),
       ),
-      home: const HomeScreen(),
+      home: const BottomNavigation(),
     );
   }
 }
