@@ -31,12 +31,11 @@ class _GurdiansActivityState extends State<GurdiansActivity> {
 
   void activateListeners() {
     print('hiii');
-    _database.child('activity').onValue.listen((event) {
+    _database.child('activity').onValue.listen((DatabaseEvent event) {
       final activity = event.snapshot.value;
+      final fetchedData = Map<String, dynamic>.from(activity as dynamic);
       setState(() {
-        if (activity != null) {
-          displayText = activity.toString();
-        }
+        displayText = fetchedData['detected'];
       });
     });
   }
@@ -69,7 +68,7 @@ class _GurdiansActivityState extends State<GurdiansActivity> {
               ElevatedButton(
                 onPressed: () async {
                   try {
-                    activity.set({'detected': 'Walking'});
+                    activity.set({'detected': 'fadf'});
                     print('added');
                   } catch (e) {
                     print('error $e');
