@@ -9,19 +9,20 @@ import 'package:flutter/services.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:lottie/lottie.dart';
 
-class MaskDetection extends StatefulWidget {
-  const MaskDetection({Key? key}) : super(key: key);
+class RelativesDetection extends StatefulWidget {
+  const RelativesDetection({Key? key}) : super(key: key);
 
   @override
-  State<MaskDetection> createState() => _MaskDetectionState();
+  State<RelativesDetection> createState() => _RelativesDetectionState();
 }
 
-class _MaskDetectionState extends State<MaskDetection> {
+class _RelativesDetectionState extends State<RelativesDetection> {
   // FirebaseDatabase database = FirebaseDatabase.instance;
   // DatabaseReference ref =
   //     FirebaseDatabase.instance.ref("activity");
   String displayText = 'Detecting...';
-  bool detected = false;
+  bool knownPerson = false;
+  bool isNobody = false;
   final _database = FirebaseDatabase.instance.ref();
 
   @override
@@ -34,7 +35,7 @@ class _MaskDetectionState extends State<MaskDetection> {
   void activateListeners() {
     print('hiii');
     _database
-        .child('mask/-NGpD65jCP05rckH8lcN')
+        .child('face/-NGpKItP-2ErOaLkKPUi')
         .onValue
         .listen((DatabaseEvent event) {
       final activity = event.snapshot.value;
@@ -43,10 +44,16 @@ class _MaskDetectionState extends State<MaskDetection> {
       if (mounted) {
         setState(() {
           displayText = fetchedData['detected'];
-          if (displayText == 'NO MASK') {
-            detected = false;
+          if (displayText == 'Random Person' || displayText == 'Nobody') {
+            knownPerson = false;
+            isNobody = false;
           } else {
-            detected = true;
+            knownPerson = true;
+            isNobody = false;
+          }
+
+          if (displayText == 'Nobody') {
+            isNobody = true;
           }
         });
       }
@@ -55,7 +62,7 @@ class _MaskDetectionState extends State<MaskDetection> {
 
   @override
   Widget build(BuildContext context) {
-    final setActivity = _database.child('mask/-NGpD65jCP05rckH8lcN');
+    final setActivity = _database.child('face/-NGpKItP-2ErOaLkKPUi');
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -71,7 +78,7 @@ class _MaskDetectionState extends State<MaskDetection> {
         backgroundColor: Colors.transparent,
         // extendBodyBehindAppBar: true,
         appBar: AppBar(
-          title: Text('Mask Detection'),
+          title: Text('Face Detection'),
         ),
         body: SafeArea(
             child: Container(
@@ -82,9 +89,8 @@ class _MaskDetectionState extends State<MaskDetection> {
             children: [
               Expanded(
                 flex: 2,
-                child: detected
-                    ? Lottie.asset('aseets/images/man-wearing-mask.json',
-                        height: 250)
+                child: knownPerson
+                    ? Lottie.asset('aseets/images/hello-boy.json', height: 250)
                     : Container(
                         child: Text(''),
                       ),
@@ -95,19 +101,38 @@ class _MaskDetectionState extends State<MaskDetection> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
+                        margin: EdgeInsets.symmetric(horizontal: 20),
                         decoration: BoxDecoration(
-                            color: detected
+                            color: knownPerson
                                 ? Color.fromARGB(255, 0, 71, 133)
-                                : Colors.red,
+                                : isNobody
+                                    ? Colors.green
+                                    : Colors.red,
                             borderRadius: BorderRadius.circular(10)),
                         padding: EdgeInsets.symmetric(
                           horizontal: 40,
                           vertical: 20,
                         ),
                         child: Text(
-                          displayText,
-                          style: TextStyle(fontSize: 30, color: Colors.white),
+                          '$displayText is here',
+                          style: TextStyle(fontSize: 25, color: Colors.white),
                         )),
+                    ElevatedButton(
+                      onPressed: () async {
+                        try {
+                          setActivity.set({'detected': 'Nobody'});
+                          setState(() {
+                            //  detected = false;
+                            knownPerson = false;
+                            isNobody = true;
+                          });
+                          print('added');
+                        } catch (e) {
+                          print('error $e');
+                        }
+                      },
+                      child: Text('OKAY'),
+                    ),
                   ],
                 ),
               ),

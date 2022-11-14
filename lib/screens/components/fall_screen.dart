@@ -9,14 +9,14 @@ import 'package:flutter/services.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:lottie/lottie.dart';
 
-class MaskDetection extends StatefulWidget {
-  const MaskDetection({Key? key}) : super(key: key);
+class FallScreen extends StatefulWidget {
+  const FallScreen({Key? key}) : super(key: key);
 
   @override
-  State<MaskDetection> createState() => _MaskDetectionState();
+  State<FallScreen> createState() => _FallScreenState();
 }
 
-class _MaskDetectionState extends State<MaskDetection> {
+class _FallScreenState extends State<FallScreen> {
   // FirebaseDatabase database = FirebaseDatabase.instance;
   // DatabaseReference ref =
   //     FirebaseDatabase.instance.ref("activity");
@@ -34,7 +34,7 @@ class _MaskDetectionState extends State<MaskDetection> {
   void activateListeners() {
     print('hiii');
     _database
-        .child('mask/-NGpD65jCP05rckH8lcN')
+        .child('fall/-NGr2Zqzpml8tH0baUE1')
         .onValue
         .listen((DatabaseEvent event) {
       final activity = event.snapshot.value;
@@ -43,7 +43,7 @@ class _MaskDetectionState extends State<MaskDetection> {
       if (mounted) {
         setState(() {
           displayText = fetchedData['detected'];
-          if (displayText == 'NO MASK') {
+          if (displayText == 'None') {
             detected = false;
           } else {
             detected = true;
@@ -55,7 +55,7 @@ class _MaskDetectionState extends State<MaskDetection> {
 
   @override
   Widget build(BuildContext context) {
-    final setActivity = _database.child('mask/-NGpD65jCP05rckH8lcN');
+    final setActivity = _database.child('fall/-NGr2Zqzpml8tH0baUE1');
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -71,7 +71,7 @@ class _MaskDetectionState extends State<MaskDetection> {
         backgroundColor: Colors.transparent,
         // extendBodyBehindAppBar: true,
         appBar: AppBar(
-          title: Text('Mask Detection'),
+          title: Text('Fall Detection'),
         ),
         body: SafeArea(
             child: Container(
@@ -83,11 +83,9 @@ class _MaskDetectionState extends State<MaskDetection> {
               Expanded(
                 flex: 2,
                 child: detected
-                    ? Lottie.asset('aseets/images/man-wearing-mask.json',
+                    ? Lottie.asset('aseets/images/warning-animation.json',
                         height: 250)
-                    : Container(
-                        child: Text(''),
-                      ),
+                    : Lottie.asset('aseets/images/cctv.json', height: 250),
               ),
               Expanded(
                 flex: 3,
@@ -97,17 +95,31 @@ class _MaskDetectionState extends State<MaskDetection> {
                     Container(
                         decoration: BoxDecoration(
                             color: detected
-                                ? Color.fromARGB(255, 0, 71, 133)
-                                : Colors.red,
+                                ? Colors.red
+                                : Color.fromARGB(255, 0, 71, 133),
                             borderRadius: BorderRadius.circular(10)),
                         padding: EdgeInsets.symmetric(
                           horizontal: 40,
                           vertical: 20,
                         ),
                         child: Text(
-                          displayText,
+                          detected ? displayText : 'WATCHING...',
                           style: TextStyle(fontSize: 30, color: Colors.white),
                         )),
+                    ElevatedButton(
+                      onPressed: () async {
+                        try {
+                          setActivity.set({'detected': 'None'});
+                          setState(() {
+                            detected = false;
+                          });
+                          print('added');
+                        } catch (e) {
+                          print('error $e');
+                        }
+                      },
+                      child: Text('OKAY'),
+                    ),
                   ],
                 ),
               ),

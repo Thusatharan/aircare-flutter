@@ -1,5 +1,8 @@
+import 'package:aircare/screens/components/fall_screen.dart';
 import 'package:aircare/screens/components/mask_screen.dart';
+import 'package:aircare/screens/components/relatives_screen.dart';
 import 'package:aircare/screens/components/sleep_screen.dart';
+import 'package:aircare/screens/components/weapon_screen.dart';
 import 'package:aircare/screens/elders-care.dart';
 import 'package:aircare/screens/guardians_activity_detection.dart';
 import 'package:aircare/screens/relative_recognition.dart';
@@ -149,7 +152,7 @@ class HomeScreen extends StatelessWidget {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    EldersCare()));
+                                                    FallScreen()));
                                       },
                                       style: ButtonStyle(
                                         backgroundColor:
@@ -243,7 +246,7 @@ class HomeScreen extends StatelessWidget {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    EldersCare()));
+                                                    WeaponsScreen()));
                                       },
                                       style: ButtonStyle(
                                         backgroundColor:
@@ -288,7 +291,7 @@ class HomeScreen extends StatelessWidget {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    EldersCare()));
+                                                    RelativesDetection()));
                                       },
                                       style: ButtonStyle(
                                         backgroundColor:

@@ -39,12 +39,14 @@ class _EldersCareState extends State<EldersCare> {
         .listen((DatabaseEvent event) {
       final activity = event.snapshot.value;
       final fetchedData = Map<String, dynamic>.from(activity as dynamic);
-      setState(() {
-        displayText = fetchedData['detected'];
-        if (displayText == 'abnormal') {
-          detected = true;
-        }
-      });
+      if (mounted) {
+        setState(() {
+          displayText = fetchedData['detected'];
+          if (displayText == 'abnormal') {
+            detected = true;
+          }
+        });
+      }
     });
   }
 
