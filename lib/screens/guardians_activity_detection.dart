@@ -55,6 +55,9 @@ class _GurdiansActivityState extends State<GurdiansActivity> {
         ),
       ),
       child: Scaffold(
+        appBar: AppBar(
+          title: Text('Activity Detection'),
+        ),
         backgroundColor: Colors.transparent,
         // extendBodyBehindAppBar: true,
 

@@ -9,14 +9,14 @@ import 'package:flutter/services.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:lottie/lottie.dart';
 
-class EldersCare extends StatefulWidget {
-  const EldersCare({Key? key}) : super(key: key);
+class MaskDetection extends StatefulWidget {
+  const MaskDetection({Key? key}) : super(key: key);
 
   @override
-  State<EldersCare> createState() => _EldersCareState();
+  State<MaskDetection> createState() => _MaskDetectionState();
 }
 
-class _EldersCareState extends State<EldersCare> {
+class _MaskDetectionState extends State<MaskDetection> {
   // FirebaseDatabase database = FirebaseDatabase.instance;
   // DatabaseReference ref =
   //     FirebaseDatabase.instance.ref("activity");
@@ -34,14 +34,14 @@ class _EldersCareState extends State<EldersCare> {
   void activateListeners() {
     print('hiii');
     _database
-        .child('activity/-NGp6s-h3R-lebc45IIP')
+        .child('mask/-NGpD65jCP05rckH8lcN')
         .onValue
         .listen((DatabaseEvent event) {
       final activity = event.snapshot.value;
       final fetchedData = Map<String, dynamic>.from(activity as dynamic);
       setState(() {
         displayText = fetchedData['detected'];
-        if (displayText == 'abnormal') {
+        if (displayText == 'mask detected') {
           detected = true;
         }
       });
@@ -50,7 +50,7 @@ class _EldersCareState extends State<EldersCare> {
 
   @override
   Widget build(BuildContext context) {
-    final setActivity = _database.child('activity/-NGp6s-h3R-lebc45IIP');
+    final setActivity = _database.child('mask/-NGpD65jCP05rckH8lcN');
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -66,7 +66,7 @@ class _EldersCareState extends State<EldersCare> {
         backgroundColor: Colors.transparent,
         // extendBodyBehindAppBar: true,
         appBar: AppBar(
-          title: Text('Activity Detection'),
+          title: Text('Mask Detection'),
         ),
         body: SafeArea(
             child: Container(
@@ -78,9 +78,9 @@ class _EldersCareState extends State<EldersCare> {
               Expanded(
                 flex: 2,
                 child: detected
-                    ? Lottie.asset('aseets/images/warning.json', height: 250)
-                    : Lottie.asset('aseets/images/check.json',
-                        height: 250, repeat: false),
+                    ? Lottie.asset('aseets/images/man-wearing-mask.json',
+                        height: 250)
+                    : Container(),
               ),
               Expanded(
                 flex: 3,
@@ -99,20 +99,20 @@ class _EldersCareState extends State<EldersCare> {
                           displayText,
                           style: TextStyle(fontSize: 30, color: Colors.white),
                         )),
-                    ElevatedButton(
-                      onPressed: () async {
-                        try {
-                          setActivity.set({'detected': 'Normal'});
-                          setState(() {
-                            detected = false;
-                          });
-                          print('added');
-                        } catch (e) {
-                          print('error $e');
-                        }
-                      },
-                      child: Text('OKAY'),
-                    ),
+                    // ElevatedButton(
+                    //   onPressed: () async {
+                    //     try {
+                    //       setActivity.set({'detected': 'Normal'});
+                    //       setState(() {
+                    //         detected = false;
+                    //       });
+                    //       print('added');
+                    //     } catch (e) {
+                    //       print('error $e');
+                    //     }
+                    //   },
+                    //   child: Text('OKAY'),
+                    // ),
                   ],
                 ),
               ),
