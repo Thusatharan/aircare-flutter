@@ -16,25 +16,83 @@ class EldersCare extends StatefulWidget {
 }
 
 class _EldersCareState extends State<EldersCare> {
-  FirebaseDatabase database = FirebaseDatabase.instance;
-  DatabaseReference ref =
-      FirebaseDatabase.instance.ref("activity/-NGnxHgVDX_kHX2qQcKB");
+  // FirebaseDatabase database = FirebaseDatabase.instance;
+  // DatabaseReference ref =
+  //     FirebaseDatabase.instance.ref("activity");
+  String displayText = 'Detecting...';
+  final _database = FirebaseDatabase.instance.ref();
 
   @override
   void initState() {
-    print(ref.child('detectedActivity'));
+    // TODO: implement initState
     super.initState();
+    activateListeners();
+  }
+
+  void activateListeners() {
+    print('hiii');
+    _database.child('activity').onValue.listen((event) {
+      final activity = event.snapshot.value;
+      setState(() {
+        if (activity != null) {
+          displayText = activity.toString();
+        }
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // extendBodyBehindAppBar: true,
+    final activity = _database.child('/activity');
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.bottomRight,
+          end: Alignment.topLeft,
+          colors: [
+            Color.fromARGB(255, 165, 155, 219),
+            Color.fromARGB(255, 181, 228, 196),
+          ],
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        // extendBodyBehindAppBar: true,
 
-      body: SafeArea(
-          child: Container(
-        child: Text('hii'),
-      )),
+        body: SafeArea(
+            child: Container(
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () async {
+                  try {
+                    activity.set({'detected': 'Walking'});
+                    print('added');
+                  } catch (e) {
+                    print('error $e');
+                  }
+                },
+                child: Text('Test'),
+              ),
+              Container(
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(30)),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 40,
+                    vertical: 20,
+                  ),
+                  child: Text(
+                    displayText,
+                    style: TextStyle(fontSize: 30, color: Colors.white),
+                  )),
+            ],
+          ),
+        )),
+      ),
     );
   }
 }
