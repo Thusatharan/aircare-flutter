@@ -74,7 +74,7 @@ class HomeScreen extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                EldersCare()));
+                                                GurdiansActivity()));
                                   },
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(
@@ -98,7 +98,7 @@ class HomeScreen extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                EldersCare()));
+                                                RelativeRecognision()));
                                   },
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(
