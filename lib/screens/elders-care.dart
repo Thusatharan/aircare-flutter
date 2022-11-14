@@ -31,19 +31,21 @@ class _EldersCareState extends State<EldersCare> {
 
   void activateListeners() {
     print('hiii');
-    _database.child('activity').onValue.listen((event) {
+    _database
+        .child('activity/-NGp6s-h3R-lebc45IIP')
+        .onValue
+        .listen((DatabaseEvent event) {
       final activity = event.snapshot.value;
+      final fetchedData = Map<String, dynamic>.from(activity as dynamic);
       setState(() {
-        if (activity != null) {
-          displayText = activity.toString();
-        }
+        displayText = fetchedData['detected'];
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final activity = _database.child('/activity');
+    final setActivity = _database.child('activity/-NGp6s-h3R-lebc45IIP');
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -66,17 +68,6 @@ class _EldersCareState extends State<EldersCare> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
-                onPressed: () async {
-                  try {
-                    activity.set({'detected': 'Walking'});
-                    print('added');
-                  } catch (e) {
-                    print('error $e');
-                  }
-                },
-                child: Text('Test'),
-              ),
               Container(
                   decoration: BoxDecoration(
                       color: Colors.green,
@@ -89,6 +80,17 @@ class _EldersCareState extends State<EldersCare> {
                     displayText,
                     style: TextStyle(fontSize: 30, color: Colors.white),
                   )),
+              ElevatedButton(
+                onPressed: () async {
+                  try {
+                    setActivity.set({'detected': 'Normal'});
+                    print('added');
+                  } catch (e) {
+                    print('error $e');
+                  }
+                },
+                child: Text('OKAY'),
+              ),
             ],
           ),
         )),

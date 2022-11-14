@@ -16,7 +16,7 @@ class RelativeRecognision extends StatefulWidget {
 }
 
 class _RelativeRecognisionState extends State<RelativeRecognision> {
-  // FirebaseDatabase database = FirebaseDatabase.instance;
+// FirebaseDatabase database = FirebaseDatabase.instance;
   // DatabaseReference ref =
   //     FirebaseDatabase.instance.ref("activity");
   String displayText = 'Detecting...';
@@ -31,19 +31,21 @@ class _RelativeRecognisionState extends State<RelativeRecognision> {
 
   void activateListeners() {
     print('hiii');
-    _database.child('activity').onValue.listen((event) {
+    _database
+        .child('mask/-NGpD65jCP05rckH8lcN')
+        .onValue
+        .listen((DatabaseEvent event) {
       final activity = event.snapshot.value;
+      final fetchedData = Map<String, dynamic>.from(activity as dynamic);
       setState(() {
-        if (activity != null) {
-          displayText = activity.toString();
-        }
+        displayText = fetchedData['detected'];
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final activity = _database.child('/activity');
+    final setActivity = _database.child('activity/-NGp6s-h3R-lebc45IIP');
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -66,17 +68,6 @@ class _RelativeRecognisionState extends State<RelativeRecognision> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
-                onPressed: () async {
-                  try {
-                    activity.set({'detected': 'Walking'});
-                    print('added');
-                  } catch (e) {
-                    print('error $e');
-                  }
-                },
-                child: Text('Test'),
-              ),
               Container(
                   decoration: BoxDecoration(
                       color: Colors.green,
@@ -89,6 +80,17 @@ class _RelativeRecognisionState extends State<RelativeRecognision> {
                     displayText,
                     style: TextStyle(fontSize: 30, color: Colors.white),
                   )),
+              ElevatedButton(
+                onPressed: () async {
+                  try {
+                    setActivity.set({'detected': 'Normal'});
+                    print('added');
+                  } catch (e) {
+                    print('error $e');
+                  }
+                },
+                child: Text('OKAY'),
+              ),
             ],
           ),
         )),
