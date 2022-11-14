@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "841147549900",
+    "project_id": "aircare-76039",
+    "storage_bucket": "aircare-76039.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841147549900:android:4e0a9b434061b908d05a69",
+        "android_client_info": {
+          "package_name": "com.example.aircare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "841147549900-qcu79u3itne2n48kfcdc06efpqerku5v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsZ9y4QbKT7IVOOPvEz8-_5lf7RfkNwVQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "841147549900-qcu79u3itne2n48kfcdc06efpqerku5v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
