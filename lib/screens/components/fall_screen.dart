@@ -43,7 +43,7 @@ class _FallScreenState extends State<FallScreen> {
       if (mounted) {
         setState(() {
           displayText = fetchedData['detected'];
-          if (displayText == 'None') {
+          if (displayText == 'None' || displayText == 'Normal') {
             detected = false;
           } else {
             detected = true;
